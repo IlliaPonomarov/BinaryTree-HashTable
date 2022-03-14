@@ -2,7 +2,7 @@ package BinaryTree.DAO;
 
 import java.util.*;
 
-public class BinarySearchTreeDAO {
+public class TreeDAO {
 
 
 

@@ -1,19 +1,22 @@
+import BinaryTree.AvlTree;
 import BinaryTree.BinarySearchTree;
-import BinaryTree.DAO.BinarySearchTreeDAO;
+import BinaryTree.DAO.TreeDAO;
 import BinaryTree.DAO.User;
 
 import java.util.Map;
 
 public class Main {
 
-    public static Map<Integer, User> users;
-    public static BinarySearchTree binarySearchTree = new BinarySearchTree();
+    protected static Map<Integer, User> users;
+    protected static BinarySearchTree binarySearchTree = new BinarySearchTree();
+    protected static AvlTree avlTree = new AvlTree();
+
 
     public static void main(String[] args) {
 
         System.out.println("Binary Search Tree: ");
         System.out.println("BST Insert:");
-        System.out.println(getTestInsertForBST());
+        System.out.println(getTestOfInsertForBST());
 
 
         System.out.println("BST Search:");
@@ -21,6 +24,11 @@ public class Main {
 
         System.out.println("BST Delete:");
         System.out.println(getTestIDeleteForBST());
+        System.out.println();
+
+        System.out.println("AVL Tree: ");
+        System.out.println("AVL Insert: ");
+        System.out.println(getTestOfInsertForAVL());
     }
 
     //***************************
@@ -30,9 +38,9 @@ public class Main {
     //***************************
 
     //Insert Test
-    public static BinarySearchTree inserBST() {
+    public static BinarySearchTree insertBST() {
 
-        users = BinarySearchTreeDAO.getData();
+        users = TreeDAO.getData();
 
         for (Map.Entry<Integer, User> userss : users.entrySet())
             binarySearchTree.insert(userss.getKey());
@@ -40,11 +48,11 @@ public class Main {
         return binarySearchTree;
     }
 
-    public static double getTestInsertForBST() {
+    public static double getTestOfInsertForBST() {
 
 
         for (int i = 0; i < 20; i++)
-            inserBST();
+            insertBST();
 
         int count = 1000;
 
@@ -52,7 +60,7 @@ public class Main {
             long begin = System.nanoTime();
 
             for (int i = 0; i < count; i++)
-                inserBST();
+                insertBST();
 
             long end = System.nanoTime();
 
@@ -70,7 +78,7 @@ public class Main {
 
         BinarySearchTree bst = new BinarySearchTree();
 
-        Map<Integer, User> user = BinarySearchTreeDAO.getData();
+        Map<Integer, User> user = TreeDAO.getData();
 
         for (Map.Entry<Integer, User> users : user.entrySet())
             bst.deleteKey(users.getKey());
@@ -123,6 +131,86 @@ public class Main {
             return (double) (end - begin) / count;
         }
     }
+
+    //***************************
+    //
+    //     AVL TREE TEST
+    //
+    //***************************
+
+    //Insert
+    public static AvlTree insertAVL() {
+
+        users = TreeDAO.getData();
+
+        for (Map.Entry<Integer, User> userss : users.entrySet())
+            avlTree.insert(userss.getKey());
+
+        return avlTree;
+    }
+
+    public static double getTestOfInsertForAVL() {
+
+
+        for (int i = 0; i < 20; i++)
+            insertAVL();
+
+        int count = 1000;
+
+        while (true) {
+            long begin = System.nanoTime();
+
+            for (int i = 0; i < count; i++)
+                insertAVL();
+
+            long end = System.nanoTime();
+
+            if ((end - begin) < 1000000000) {
+                count *= 1000;
+                continue;
+            }
+            return (double) (end - begin) / count;
+        }
+
+    }
+
+
+    //Delete
+    public static AvlTree deleteAVL() {
+
+        users = TreeDAO.getData();
+
+        for (Map.Entry<Integer, User> userss : users.entrySet())
+            avlTree.delete(userss.getKey());
+
+        return avlTree;
+    }
+
+    public static double getTestOfDeleteForAVL() {
+
+
+        for (int i = 0; i < 20; i++)
+            insertAVL();
+
+        int count = 1000;
+
+        while (true) {
+            long begin = System.nanoTime();
+
+            for (int i = 0; i < count; i++)
+                insertAVL();
+
+            long end = System.nanoTime();
+
+            if ((end - begin) < 1000000000) {
+                count *= 1000;
+                continue;
+            }
+            return (double) (end - begin) / count;
+        }
+
+    }
+
 
 
 }
