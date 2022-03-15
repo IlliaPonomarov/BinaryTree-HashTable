@@ -3,6 +3,7 @@ import BinaryTree.BinarySearchTree;
 import BinaryTree.DAO.TreeDAO;
 import BinaryTree.DAO.User;
 
+import java.util.Hashtable;
 import java.util.Map;
 
 public class Main {
@@ -19,16 +20,26 @@ public class Main {
         System.out.println(getTestOfInsertForBST());
 
 
-        System.out.println("BST Search:");
+        System.out.println("BST Search by Key:");
         System.out.println(searchByKeyTestBST());
 
         System.out.println("BST Delete:");
         System.out.println(getTestIDeleteForBST());
         System.out.println();
 
+        ////
+
         System.out.println("AVL Tree: ");
+
         System.out.println("AVL Insert: ");
         System.out.println(getTestOfInsertForAVL());
+
+        System.out.println("AVL Search by Key: ");
+        System.out.println(searchByKeyAVL());
+
+        System.out.println("AVL Delete: ");
+        System.out.println(getTestOfDeleteForAVL());
+
     }
 
     //***************************
@@ -174,23 +185,10 @@ public class Main {
 
     }
 
-
-    //Delete
-    public static AvlTree deleteAVL() {
-
-        users = TreeDAO.getData();
-
-        for (Map.Entry<Integer, User> userss : users.entrySet())
-            avlTree.delete(userss.getKey());
-
-        return avlTree;
-    }
-
-    public static double getTestOfDeleteForAVL() {
-
-
+    //Search
+    public static double searchByKeyAVL(){
         for (int i = 0; i < 20; i++)
-            insertAVL();
+            avlTree.searchByKey((int) Math.random() * 1000);
 
         int count = 1000;
 
@@ -198,7 +196,41 @@ public class Main {
             long begin = System.nanoTime();
 
             for (int i = 0; i < count; i++)
-                insertAVL();
+                avlTree.searchByKey((int) Math.random() * 1000);
+
+            long end = System.nanoTime();
+
+            if ((end - begin) < 1000000000) {
+                count *= 1000;
+                continue;
+            }
+            return (double) (end - begin) / count;
+        }
+    }
+
+    //Delete
+    public static AvlTree deleteAVL() {
+
+        users = TreeDAO.getData();
+
+        for (Map.Entry<Integer, User> userss : users.entrySet())
+            avlTree.deleteNode(userss.getKey());
+
+        return avlTree;
+    }
+
+    public static double getTestOfDeleteForAVL() {
+
+        for (int i = 0; i < 20; i++)
+            deleteAVL();
+
+        int count = 1000;
+
+        while (true) {
+            long begin = System.nanoTime();
+
+            for (int i = 0; i < count; i++)
+                deleteAVL();
 
             long end = System.nanoTime();
 

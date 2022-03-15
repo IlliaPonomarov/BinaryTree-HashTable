@@ -176,6 +176,12 @@ public class BinarySearchTree {
 
     }
 
+    private int searchByKeyRec2(Node root, int key){
+        while (root.key != key || root!= null){
+
+
+        }
+    }
     //DELETE TEST
 
     public void deleteALL(){

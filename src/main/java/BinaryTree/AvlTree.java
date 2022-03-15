@@ -129,12 +129,12 @@ public class AvlTree {
         // If the key to be deleted is smaller than
         // the root's key, then it lies in left subtree
         if (key < root.key)
-            root.left = deleteNode(root.left, key);
+            root.left = deleteNodeRec(root.left, key);
 
             // If the key to be deleted is greater than the
             // root's key, then it lies in right subtree
         else if (key > root.key)
-            root.right = deleteNode(root.right, key);
+            root.right = deleteNodeRec(root.right, key);
 
             // if key is same as root's key, then this is the node
             // to be deleted
@@ -171,7 +171,7 @@ public class AvlTree {
                 root.key = temp.key;
 
                 // Delete the inorder successor
-                root.right = deleteNode(root.right, temp.key);
+                root.right = deleteNodeRec(root.right, temp.key);
             }
         }
 
@@ -210,6 +210,23 @@ public class AvlTree {
         }
 
         return root;
+    }
+
+    public int searchByKey(int key){
+        return searchByKeyRec(root, key);
+    }
+
+    private int searchByKeyRec(Node root, int key){
+
+        if (root.key == key || root == null)
+            return root.key;
+        else {
+
+            if (key > root.key)
+                return searchByKeyRec(root.right, key);
+        }
+        return searchByKeyRec(root.left, key);
+
     }
 
     void inorderRec(Node root){
