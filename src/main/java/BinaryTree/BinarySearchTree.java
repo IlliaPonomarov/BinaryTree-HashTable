@@ -181,6 +181,7 @@ public class BinarySearchTree {
 
 
         }
+        return -1;
     }
     //DELETE TEST
 

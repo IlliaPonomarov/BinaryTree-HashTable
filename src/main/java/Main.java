@@ -2,8 +2,8 @@ import BinaryTree.AvlTree;
 import BinaryTree.BinarySearchTree;
 import BinaryTree.DAO.TreeDAO;
 import BinaryTree.DAO.User;
+import HashTables.LinkedListIm;
 
-import java.util.Hashtable;
 import java.util.Map;
 
 public class Main {
@@ -14,6 +14,15 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+        LinkedListIm list = new LinkedListIm();
+        list.insertLinkedList(list, 1);
+        list.insertLinkedList(list, 12);
+        list.insertLinkedList(list, 3);
+
+        list.print();
+
+
 
         System.out.println("Binary Search Tree: ");
         System.out.println("BST Insert:");
