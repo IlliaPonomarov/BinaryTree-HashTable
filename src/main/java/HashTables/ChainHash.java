@@ -1,97 +1,123 @@
 package HashTables;
 
+import java.util.LinkedList;
+
 public class ChainHash {
     final static int SIZE = 1000;
-    Node[] hashtable = new Node[SIZE + 1];
-    Node head;
 
-    class Node{
-        int key;
-        Node next;
+    LinkedList<HTObject>[] hashtable = new LinkedList[SIZE  +1];
 
-        public Node(int key) {
+    class HTObject {
+        Integer key;
+        String value;
+
+        public HTObject(Integer key, String value) {
             this.key = key;
-            next = null;
+            this.value = value;
         }
+
+        public Integer getKey() {
+            return key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public HTObject(){}
     }
 
-    public int hashFunction(int key){
-        return key % SIZE;
-    }
-
-    public ChainHash insertHash(int key, ChainHash chainHash){
-        int hashFunc = hashFunction(key);
-        Node node = new Node(key);
-        Node linkNext = new Node(key);
-        linkNext.next = null;
-
-
-        if (hashtable[hashFunc] == null){
-            chainHash.head = linkNext;
-            hashtable[hashFunc] = chainHash.head;
-            hashtable[hashFunc].next = null;
-        }
-        else if (hashtable[hashFunc] != null && hashtable[hashFunc].next == null && chainHash.head != null){
-
-            Node last = chainHash.head;
-            hashtable[hashFunc] = new Node(key);
-            hashtable[hashFunc].next = null;
-
-            while (last.next != null)
-                last = last.next;
-
-            last.next = linkNext;
-        }
-        return chainHash;
+    public ChainHash() {
+        for (int i = 0; i < SIZE + 1; i++)
+            hashtable[i] = null;
     }
 
 
-    public int searchByKeyHash(int key){
+    public int hashFunction(Integer key){
+        int hash = key.hashCode();
+        return (hash & 0x7FFFFFFF) % SIZE;
+    }
+
+    public void insertHash(Integer key, String value){
+        int index = hashFunction(key);
+//        HTObject linkNext = new HTObject(key);
+//        linkNext.next = null;
+//
+//        System.out.println("index = " + index);
+//
+//
+//        if (hashtable[index] == null){
+//            chainHash.head = linkNext;
+//            hashtable[index] = chainHash.head;
+//            hashtable[index].next = null;
+//        }
+//        else if (hashtable[index] != null && hashtable[index].next == null && chainHash.head != null){
+//
+//            HTObject last = chainHash.head;
+//            hashtable[index] = new HTObject(key);
+//            hashtable[index].next = null;
+//
+//            while (last.next != null)
+//                last = last.next;
+//
+//            last.next = linkNext;
+//        }
+//        return chainHash;
+        LinkedList<HTObject> htObjects = hashtable[index];
+
+        if (htObjects == null){
+            htObjects = new LinkedList<HTObject>();
+            htObjects.add(new HTObject(key, value));
+            hashtable[index] = htObjects;
+        }
+        else{
+            for (int i = 0; i < htObjects.size(); i++) {
+
+                if (hashtable.length >= )
+
+                if (htObjects.get(i).key.equals(key))
+                    htObjects.get(i).value = value;return;
+            }
+            htObjects.add(new HTObject(key, value));
+            hashtable[index] = htObjects;
+        }
+    }
+
+    public String deleteByKey(int key){
 
         int index = hashFunction(key);
-
-        while (hashtable[index] != null){
-
-            if (hashtable[index] == null)
-                return -1;
-
-            if (hashtable[index].key == key)
-                return index;
-
-            else if (hashtable[index].next != null)
-                hashtable[index] = hashtable[index].next;
-
-            else if (hashtable[index].next == null)
-                break;
-
-
-
-
-        }
-        return 0;
+        if (hashtable != null){
+            LinkedList<HTObject> htObjects = hashtable[index];
+            for (int i = 0; i < htObjects.size(); i++)
+                if (htObjects.get(i).key.equals(key)) {
+                    htObjects.get(i).key = null;
+                    htObjects.get(i).value = null;
+                    System.out.println("Delete was successful");
+                }
+        }else
+            return null;
+        return null;
     }
 
-    public void printHash(){
+    public String getValueByKey(int key){
 
-        Node node = null;
-        for (int i = 0; i < SIZE; i++) {
-            if (hashtable[i] != null){
-                node = hashtable[i];
+        int index = hashFunction(key);
+        if (hashtable != null) {
 
-                if (hashtable[i].next != null){
-                    while (node.next != null){
-                        System.out.print(node.key + " ");
-                        System.out.print("->");
-                        node = node.next;
-                    }
-                    System.out.print(node.key  +" ");
-                }else {
-                    System.out.print(hashtable[i].key + " ");
-                }
-                System.out.println(node.key + " ");
+            LinkedList<HTObject> htObjectLinkedList = hashtable[index];
+            for (int i = 0; i < htObjectLinkedList.size(); i++) {
+                if (htObjectLinkedList.get(i).key.equals(key))
+                    return htObjectLinkedList.get(i).value;
             }
         }
+
+        return null;
     }
+
+    public void  resize(){
+        LinkedList<HTObject>[] newList = new LinkedList[]{};
+    }
+
 
 
 }

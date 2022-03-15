@@ -1,16 +1,23 @@
 package HashTables;
 
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.TreeSet;
+
 public class MainTest {
     public static void main(String[] args) {
-        ChainHash chainHash = new ChainHash();
-        chainHash.insertHash(121, chainHash);
-        chainHash.insertHash(12, chainHash);
-        chainHash.insertHash(12, chainHash);
-        chainHash.insertHash(12, chainHash);
-        chainHash.insertHash(11, chainHash);
-        chainHash.insertHash(1, chainHash);
-        chainHash.insertHash(32, chainHash);
 
-        chainHash.printHash();
+
+        Integer key = 16;
+       ChainHash chainHash = new ChainHash();
+
+       chainHash.insertHash(12, "coffee");
+       chainHash.insertHash(11, "command");
+       chainHash.insertHash(33, "sometime");
+       chainHash.insertHash(21, "forest");
+       chainHash.insertHash(89, "plant");
+
     }
+
+
 }
