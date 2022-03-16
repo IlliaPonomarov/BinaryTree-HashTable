@@ -1,4 +1,4 @@
-package BinaryTree.DAO;
+package DAO;
 
 public class User {
     private String name;

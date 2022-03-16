@@ -1,4 +1,4 @@
-package BinaryTree.DAO;
+package DAO;
 
 import java.util.*;
 

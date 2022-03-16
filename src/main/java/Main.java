@@ -1,8 +1,8 @@
 import BinaryTree.AvlTree;
 import BinaryTree.BinarySearchTree;
-import BinaryTree.DAO.HashDao;
-import BinaryTree.DAO.TreeDAO;
-import BinaryTree.DAO.User;
+import DAO.HashDao;
+import DAO.TreeDAO;
+import DAO.User;
 import HashTables.ChainHash;
 
 import java.util.Map;
@@ -56,6 +56,8 @@ public class Main {
     public static void hashTablesTest(){
         System.out.println("ChainHash Test: ");
         System.out.println("Insert: " + getTimeInsertChainHash());
+        System.out.println("Search by key: " + getTimeSearchByKeyChainHash());
+        System.out.println("Delete by key: " + getTimeDeleteByKeyChainHash());
     }
 
 
@@ -305,13 +307,14 @@ public class Main {
     }
 
 
-    public static ChainHash searchByKeyChainHashTest(){
+    //search
+    public static ChainHash searchByKeyTestChainHash(){
 
         String[] test = HashDao.getDataHash();
 
 
         for (int i = 0; i < test.length; i++)
-            chainHash.insertHash((int) Math.random() * 1000, test[i]);
+            chainHash.getValueByKey((int) Math.random() * 1000);
 
         return chainHash;
 
@@ -319,7 +322,7 @@ public class Main {
 
     public static Double getTimeSearchByKeyChainHash(){
         for (int i = 0; i < 20; i++)
-            insertChainHashTest();
+            searchByKeyTestChainHash();
 
         int count = 100;
 
@@ -327,7 +330,7 @@ public class Main {
             long begin = System.nanoTime();
 
             for (int i = 0; i < count; i++)
-                insertChainHashTest();
+                searchByKeyTestChainHash();
 
             long end = System.nanoTime();
 
@@ -339,5 +342,40 @@ public class Main {
         }
     }
 
+    //delete
+
+    public static ChainHash deleteByKeyTestChainHash(){
+
+        String[] test = HashDao.getDataHash();
+
+
+        for (int i = 0; i < test.length; i++)
+            chainHash.deleteByKey((int) Math.random() * 500);
+
+        return chainHash;
+
+    }
+
+    public static Double getTimeDeleteByKeyChainHash(){
+        for (int i = 0; i < 20; i++)
+           deleteByKeyTestChainHash();
+
+        int count = 1000;
+
+        while (true) {
+            long begin = System.nanoTime();
+
+            for (int i = 0; i < count; i++)
+                deleteByKeyTestChainHash();
+
+            long end = System.nanoTime();
+
+            if ((end - begin) < 1000000000) {
+                count *= 1000;
+                continue;
+            }
+            return (double) (end - begin) / count;
+        }
+    }
 
 }

@@ -67,19 +67,19 @@ public class ChainHash {
         }
     }
 
-    public String deleteByKey(int key) {
-
+    public void deleteByKey(int key) {
         int index = hashFunction(key);
-        if (hashtable != null) {
-            LinkedList<HTObject> htObjects = hashtable[index];
-            for (int i = 0; i < htObjects.size(); i++)
-                if (htObjects.get(i).getKey().equals(key)) {
-                    htObjects.remove(htObjects.get(i));
-                    System.out.println("Delete was successful");
-                }
-        } else
-            return null;
-        return null;
+        LinkedList<HTObject> items = hashtable[index];
+
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getKey().equals(key) && items != null){
+                items.remove(items.get(i));
+                return;
+            }else
+                return;
+        }
+
+
     }
 
     public String getValueByKey(int key) {
@@ -90,14 +90,13 @@ public class ChainHash {
             LinkedList<HTObject> htObjectLinkedList = hashtable[index];
             for (int i = 0; i < htObjectLinkedList.size(); i++) {
                 if (htObjectLinkedList.get(i).getKey().equals(key)) {
-                    System.out.println(htObjectLinkedList.get(i).value);
+                    return htObjectLinkedList.get(i).value;
                 }
             }
         }
 
         return null;
     }
-
 
     public LinkedList<HTObject>[] resize() {
         int sizeOfnewTable = hashtable.length * 2;

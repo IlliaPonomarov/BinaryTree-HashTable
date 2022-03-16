@@ -1,7 +1,4 @@
-package BinaryTree.DAO;
-
-import java.util.HashMap;
-import java.util.Map;
+package DAO;
 
 public class HashDao {
 
