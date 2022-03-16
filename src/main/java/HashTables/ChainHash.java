@@ -38,8 +38,7 @@ public class ChainHash {
 
 
     public int hashFunction(Integer key) {
-        int hash = key.hashCode();
-        return (hash & 0x7FFFFFFF) % CAPACITY;
+        return (key.hashCode() & 0x7FFFFFFF) % CAPACITY;
     }
 
     public void insertHash(Integer key, String value) {

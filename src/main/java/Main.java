@@ -1,15 +1,17 @@
 import BinaryTree.AvlTree;
 import BinaryTree.BinarySearchTree;
+import BinaryTree.DAO.HashDao;
 import BinaryTree.DAO.TreeDAO;
 import BinaryTree.DAO.User;
 import HashTables.ChainHash;
-import HashTables.LinkedListIm;
 
 import java.util.Map;
 
 public class Main {
 
     protected static Map<Integer, User> users;
+
+    
     protected static BinarySearchTree binarySearchTree = new BinarySearchTree();
     protected static AvlTree avlTree = new AvlTree();
     protected static ChainHash chainHash = new ChainHash();
@@ -17,43 +19,45 @@ public class Main {
 
     public static void main(String[] args) {
 
-        LinkedListIm list = new LinkedListIm();
-        list.insertLinkedList(list, 1);
-        list.insertLinkedList(list, 12);
-        list.insertLinkedList(list, 3);
-
-        list.print();
 
 
-//
-//        System.out.println("Binary Search Tree: ");
-//        System.out.println("BST Insert:");
-//        System.out.println(getTestOfInsertForBST());
-//
-//
-//        System.out.println("BST Search by Key:");
-//        System.out.println(searchByKeyTestBST());
-//
-//        System.out.println("BST Delete:");
-//        System.out.println(getTestIDeleteForBST());
-//        System.out.println();
-//
-//        ////
-//
-//        System.out.println("AVL Tree: ");
-//
-//        System.out.println("AVL Insert: ");
-//        System.out.println(getTestOfInsertForAVL());
-//
-//        System.out.println("AVL Search by Key: ");
-//        System.out.println(searchByKeyAVL());
-//
-//        System.out.println("AVL Delete: ");
-//        System.out.println(getTestOfDeleteForAVL());
 
-        System.out.println(getTimeTestForInsert());
+        hashTablesTest();
+       // chainHash.getAll();
 
     }
+
+
+    public static void treeTest(){
+
+        System.out.println("Binary Search Tree: ");
+        System.out.println("BST Insert:");
+        System.out.println(getTestOfInsertForBST());
+
+        System.out.println("BST Search by Key:");
+        System.out.println(searchByKeyTestBST());
+
+        System.out.println("BST Delete:");
+        System.out.println(getTestIDeleteForBST());
+        System.out.println();
+
+        System.out.println("AVL Tree: ");
+
+        System.out.println("AVL Insert: ");
+        System.out.println(getTestOfInsertForAVL());
+
+        System.out.println("AVL Search by Key: ");
+        System.out.println(searchByKeyAVL());
+
+        System.out.println("AVL Delete: ");
+        System.out.println(getTestOfDeleteForAVL());
+    }
+
+    public static void hashTablesTest(){
+        System.out.println("ChainHash Test: ");
+        System.out.println("Insert: " + getTimeInsertChainHash());
+    }
+
 
     //***************************
     //
@@ -265,21 +269,59 @@ public class Main {
     //**************************************
 
 
+    //insert chainhash
     public static ChainHash insertChainHashTest(){
 
-        users = TreeDAO.getData();
-        for (Map.Entry<Integer, User> userss : users.entrySet())
-            chainHash.insertHash(userss.getKey(), userss.getValue().toString());
+        String[] test = HashDao.getDataHash();
+
+
+        for (int i = 0; i < test.length; i++)
+            chainHash.insertHash((int) Math.random() * 1000, test[i]);
 
         return chainHash;
 
     }
 
-    public static Double getTimeTestForInsert(){
+    public static Double getTimeInsertChainHash(){
         for (int i = 0; i < 20; i++)
             insertChainHashTest();
 
-        int count = 1000;
+        int count = 100;
+
+        while (true) {
+            long begin = System.nanoTime();
+
+            for (int i = 0; i < count; i++)
+                insertChainHashTest();
+
+            long end = System.nanoTime();
+
+            if ((end - begin) < 1000000000) {
+                count *= 1000;
+                continue;
+            }
+            return (double) (end - begin) / count;
+        }
+    }
+
+
+    public static ChainHash searchByKeyChainHashTest(){
+
+        String[] test = HashDao.getDataHash();
+
+
+        for (int i = 0; i < test.length; i++)
+            chainHash.insertHash((int) Math.random() * 1000, test[i]);
+
+        return chainHash;
+
+    }
+
+    public static Double getTimeSearchByKeyChainHash(){
+        for (int i = 0; i < 20; i++)
+            insertChainHashTest();
+
+        int count = 100;
 
         while (true) {
             long begin = System.nanoTime();
