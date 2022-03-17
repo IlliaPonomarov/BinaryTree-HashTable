@@ -8,6 +8,7 @@ public class LinearHash {
 
     HTObject[] hashtable = new HTObject[CAPACITY + 1];
 
+    HTObject i = new HTObject("lol", 9);
     class HTObject {
         private String key;
         private Integer value;
@@ -28,6 +29,7 @@ public class LinearHash {
 
     public LinearHash() {
 
+        i.getKey();
         for (int i = 0; i < CAPACITY + 1 ; i++)
            this.hashtable[i] = null;
     }
@@ -36,7 +38,7 @@ public class LinearHash {
         return (key.hashCode() & 0x7FFFFFFF) % CAPACITY;
     }
 
-    public void insert(String key, Integer value) {
+    public HTObject insert(String key, Integer value) {
         int index = hashFunction(key);
         HTObject htObj = hashtable[index];
 
@@ -45,21 +47,22 @@ public class LinearHash {
             hashtable[index] = htObj;
         } else if (htObj != null) {
 
-            for (int i = 1; i <= hashtable.length; i++) {
+            for (int i = 0; i < hashtable.length; i++) {
                 index = index + 1;
                 if (hashtable[index] == null) {
                     htObj = new HTObject(key, value);
                     hashtable[index] = htObj;
-                    return;
+                    return hashtable[index];
                 }
             }
         }
+
+        return hashtable[index];
     }
 
     public void searchByKey(String key){
 
         int index = hashFunction(key);
-        HTObject htObject = hashtable[index];
 
             for (int i = index; i < hashtable.length; i++) {
                 if (hashtable[i] != null) {
@@ -71,6 +74,38 @@ public class LinearHash {
             }
         return;
     }
+
+    public void deleteByKey(String key){
+        int index = hashFunction(key);
+
+        for (int i = index; i < hashtable.length; i++)
+            if (hashtable[i] != null)
+                if (hashtable[i].getKey().equals(key))
+                    hashtable[i] = null;
+        return;
+    }
+
+    public void resize(){
+        HTObject[] oldHashtable = hashtable;
+        HTObject[] newHashtable = new HTObject[hashtable.length * 2];
+
+        for (int i = 0; i < newHashtable.length; i++)
+            newHashtable[i] = null;
+
+
+        for (int i = 0; i < oldHashtable.length; i++) {
+            if (oldHashtable[i] != null){
+                newHashtable[i] = new HTObject(oldHashtable[i].getKey(), oldHashtable[i].getValue());
+            }
+        }
+
+        hashtable = newHashtable;
+
+        System.out.println(hashtable.length);
+
+    }
+
+
     public void getAll() {
        Arrays.stream(hashtable).filter(object -> object != null).forEach(i -> System.out.println(i.getKey() + " " + i.getValue()));
     }

@@ -15,6 +15,7 @@ public static void main(String[]args){
         linearHash.insert("horse", 1);
 
         linearHash.searchByKey("stove");
+        linearHash.resize();
 
     }
 }

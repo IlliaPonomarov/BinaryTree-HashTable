@@ -79,8 +79,6 @@ public class ChainHash {
             }else
                 return;
         }
-
-
     }
 
     public int getValueByKey(String key) {
