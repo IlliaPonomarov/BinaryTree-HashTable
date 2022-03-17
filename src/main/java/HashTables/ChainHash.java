@@ -11,21 +11,22 @@ public class ChainHash {
     public static LinkedList<HTObject>[] hashtable = new LinkedList[CAPACITY + 1];
 
     class HTObject {
-        private Integer key;
-        private String value;
+        private String key;
+        private Integer value;
 
-        public HTObject(Integer key, String value) {
+        public HTObject(String key, Integer value) {
             this.key = key;
             this.value = value;
         }
 
-        public Integer getKey() {
+        public String getKey() {
             return key;
         }
 
-        public String getValue() {
+        public Integer getValue() {
             return value;
         }
+
 
         public HTObject() {
         }
@@ -37,11 +38,11 @@ public class ChainHash {
     }
 
 
-    public int hashFunction(Integer key) {
+    public int hashFunction(String key) {
         return (key.hashCode() & 0x7FFFFFFF) % CAPACITY;
     }
 
-    public void insertHash(Integer key, String value) {
+    public void insertHash(String key, Integer value) {
         int index = hashFunction(key);
         LinkedList<HTObject> htObjects = hashtable[index];
 
@@ -67,7 +68,7 @@ public class ChainHash {
         }
     }
 
-    public void deleteByKey(int key) {
+    public void deleteByKey(String key) {
         int index = hashFunction(key);
         LinkedList<HTObject> items = hashtable[index];
 
@@ -82,7 +83,7 @@ public class ChainHash {
 
     }
 
-    public String getValueByKey(int key) {
+    public int getValueByKey(String key) {
 
         int index = hashFunction(key);
         if (hashtable != null) {
@@ -90,12 +91,12 @@ public class ChainHash {
             LinkedList<HTObject> htObjectLinkedList = hashtable[index];
             for (int i = 0; i < htObjectLinkedList.size(); i++) {
                 if (htObjectLinkedList.get(i).getKey().equals(key)) {
-                    return htObjectLinkedList.get(i).value;
+                    return htObjectLinkedList.get(i).getValue();
                 }
             }
         }
 
-        return null;
+        return -1;
     }
 
     public LinkedList<HTObject>[] resize() {

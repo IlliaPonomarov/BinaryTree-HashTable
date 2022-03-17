@@ -58,6 +58,7 @@ public class Main {
         System.out.println("Insert: " + getTimeInsertChainHash());
         System.out.println("Search by key: " + getTimeSearchByKeyChainHash());
         System.out.println("Delete by key: " + getTimeDeleteByKeyChainHash());
+        System.out.println("Resize: " + resizeChainHash());
     }
 
 
@@ -278,7 +279,7 @@ public class Main {
 
 
         for (int i = 0; i < test.length; i++)
-            chainHash.insertHash((int) Math.random() * 1000, test[i]);
+            chainHash.insertHash(test[(int) Math.random() * 500], (int) Math.random() * 1000);
 
         return chainHash;
 
@@ -314,7 +315,7 @@ public class Main {
 
 
         for (int i = 0; i < test.length; i++)
-            chainHash.getValueByKey((int) Math.random() * 1000);
+            chainHash.getValueByKey(test[(int) Math.random() * 500]);
 
         return chainHash;
 
@@ -350,7 +351,7 @@ public class Main {
 
 
         for (int i = 0; i < test.length; i++)
-            chainHash.deleteByKey((int) Math.random() * 500);
+            chainHash.deleteByKey(test[(int) Math.random() * 500]);
 
         return chainHash;
 
@@ -367,6 +368,29 @@ public class Main {
 
             for (int i = 0; i < count; i++)
                 deleteByKeyTestChainHash();
+
+            long end = System.nanoTime();
+
+            if ((end - begin) < 1000000000) {
+                count *= 1000;
+                continue;
+            }
+            return (double) (end - begin) / count;
+        }
+    }
+
+    //resize
+    public static Double resizeChainHash(){
+        for (int i = 0; i < 20; i++)
+            chainHash.resize();
+
+        int count = 1000;
+
+        while (true) {
+            long begin = System.nanoTime();
+
+            for (int i = 0; i < count; i++)
+                chainHash.resize();
 
             long end = System.nanoTime();
 
