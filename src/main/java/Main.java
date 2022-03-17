@@ -19,9 +19,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-
-
         hashTablesTest();
        // chainHash.getAll();
 
