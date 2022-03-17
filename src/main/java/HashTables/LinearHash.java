@@ -29,7 +29,7 @@ public class LinearHash {
     public LinearHash() {
 
         for (int i = 0; i < CAPACITY + 1 ; i++)
-            this.hashtable[i] = null;
+           this.hashtable[i] = null;
     }
 
     public int hashFunction(String key) {
@@ -56,15 +56,23 @@ public class LinearHash {
         }
     }
 
-    public String getAll() {
+    public void searchByKey(String key){
 
-       // Arrays.stream(hashtable).forEach(i -> System.out.println(i.getKey() + " " + i.getValue()));
+        int index = hashFunction(key);
+        HTObject htObject = hashtable[index];
 
-        for (int i = 0; i < hashtable.length; i++) {
-            if (hashtable[i] != null)
-                System.out.println(hashtable[i].getKey() + " "  + hashtable[i].getValue());
-        }
-        return "";
+            for (int i = index; i < hashtable.length; i++) {
+                if (hashtable[i] != null) {
+                    if (hashtable[i].getKey().equals(key)) {
+                        HTObject h = hashtable[i];
+                        System.out.println(h.getKey() + " " + h.getValue());
+                    }
+                }
+            }
+        return;
+    }
+    public void getAll() {
+       Arrays.stream(hashtable).filter(object -> object != null).forEach(i -> System.out.println(i.getKey() + " " + i.getValue()));
     }
 }
 

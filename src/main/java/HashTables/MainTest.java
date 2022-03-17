@@ -14,7 +14,7 @@ public static void main(String[]args){
         linearHash.insert("stove", 98);
         linearHash.insert("horse", 1);
 
-        System.out.println(linearHash.getAll());
+        linearHash.searchByKey("stove");
 
     }
 }
