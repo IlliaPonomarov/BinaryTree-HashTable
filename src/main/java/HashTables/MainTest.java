@@ -17,8 +17,8 @@ public static void main(String[]args){
 
         System.out.println(binarySearchTreeHeap.search(8));
 
-
-
+        binarySearchTreeHeap.print();
+        binarySearchTreeHeap.delete(8);
         binarySearchTreeHeap.print();
 
 

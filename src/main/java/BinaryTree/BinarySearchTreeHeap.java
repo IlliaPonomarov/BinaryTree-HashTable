@@ -1,9 +1,5 @@
 package BinaryTree;
 
-import java.util.*;
-
-;
-
 public class BinarySearchTreeHeap {
     int CAPACITY = 1000;
     static int count_of_elements = 0;
@@ -37,23 +33,23 @@ public class BinarySearchTreeHeap {
         else{
 
             heapArray[ count_of_elements++] = value;
-            heap(count_of_elements - 1);
+            heapTop(count_of_elements - 1);
 
         }
     }
 
     public int search(int key){
 
-        for (int i = 0; i < heapArray.length; i++) {
+        for (int i = 0; i < heapArray.length; i++)
             if (heapArray[i] == key)
                 return i;
-        }
+
         return -1;
     }
 
 
 
-    void heap(int index){
+    void heapTop(int index){
 
         int temp = heapArray[index];
         while (index > 0 && temp > heapArray[getRootNode(index)]){
@@ -62,6 +58,37 @@ public class BinarySearchTreeHeap {
         }
 
         heapArray[index] = temp;
+    }
+
+    void heapDown(int index){
+
+    }
+
+    public int delete(int key){
+        int tmp = 0, child;
+
+        heapArray[key] = heapArray[count_of_elements - 1];
+        count_of_elements--;
+
+        tmp = heapArray[key];
+
+        while ((getLeftNode(key)) < count_of_elements){
+            child = max(key);
+            if (tmp < heapArray[child]){
+                heapArray[key] = heapArray[child];
+            }else
+                break;
+            key = child;
+        }
+
+        heapArray[key] = tmp;
+
+
+        return key;
+    }
+
+    public int max(int index){
+        return heapArray[getLeftNode(index)] > heapArray[getRightNode(index)] ? getLeftNode(index) : getRightNode(index);
     }
 
 
