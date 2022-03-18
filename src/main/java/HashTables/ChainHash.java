@@ -107,7 +107,6 @@ public class ChainHash {
         for (int i = 0; i < hashtable.length; i++)
             hashtable[i] = null;
 
-
         for (LinkedList<HTObject> objects: old_hastable) {
             if (objects != null){
                 insertHash(objects.get(0).getKey(), objects.get(0).getValue());
@@ -116,8 +115,6 @@ public class ChainHash {
                         insertHash(objects.get(i).getKey(), objects.get(i).getValue());
             }
         }
-
-        System.out.println(hashtable.length);
 
 
         return new_hastable;

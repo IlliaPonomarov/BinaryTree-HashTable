@@ -8,7 +8,6 @@ public class LinearHash {
 
     HTObject[] hashtable = new HTObject[CAPACITY + 1];
 
-    HTObject i = new HTObject("lol", 9);
     class HTObject {
         private String key;
         private Integer value;
@@ -29,7 +28,7 @@ public class LinearHash {
 
     public LinearHash() {
 
-        i.getKey();
+
         for (int i = 0; i < CAPACITY + 1 ; i++)
            this.hashtable[i] = null;
     }
