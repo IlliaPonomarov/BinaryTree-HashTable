@@ -152,7 +152,8 @@ public class BinarySearchTree {
                             return root;
                         }
                     }
-                } else
+                }
+                else
                     return root;
             }
         }

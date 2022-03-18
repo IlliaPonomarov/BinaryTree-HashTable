@@ -1,21 +1,26 @@
 package HashTables;
 
+import BinaryTree.BinarySearchTreeHeap;
+
 class MainTest{
 public static void main(String[]args){
 
         LinearHash linearHash = new LinearHash();
 
-        linearHash.insert("hot", 66);
-        linearHash.insert("hot", 77);
-        linearHash.insert("hot", 767);
-        linearHash.insert("hot", 67);
-        linearHash.insert("hot", 770);
-        linearHash.insert("idle", 90);
-        linearHash.insert("stove", 98);
-        linearHash.insert("horse", 1);
+        BinarySearchTreeHeap binarySearchTreeHeap = new BinarySearchTreeHeap();
+        binarySearchTreeHeap.insert(1);
+        binarySearchTreeHeap.insert(3);
+        binarySearchTreeHeap.insert(6);
+        binarySearchTreeHeap.insert(9);
+        binarySearchTreeHeap.insert(5);
+        binarySearchTreeHeap.insert(8);
 
-        linearHash.searchByKey("stove");
-        linearHash.resize();
+        System.out.println(binarySearchTreeHeap.search(8));
+
+
+
+        binarySearchTreeHeap.print();
+
 
     }
 }
