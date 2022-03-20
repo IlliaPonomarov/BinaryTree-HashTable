@@ -1,25 +1,18 @@
 package HashTables;
 
-import BinaryTree.BinarySearchTreeHeap;
+import BinaryTree.BinarySearchTree;
+import BinaryTree.SplayTree;
 
 class MainTest{
 public static void main(String[]args){
 
-        LinearHash linearHash = new LinearHash();
+    SplayTree splayTree = new SplayTree();
+    BinarySearchTree binarySearchTree = new BinarySearchTree();
 
-        BinarySearchTreeHeap binarySearchTreeHeap = new BinarySearchTreeHeap();
-        binarySearchTreeHeap.insert(1);
-        binarySearchTreeHeap.insert(3);
-        binarySearchTreeHeap.insert(6);
-        binarySearchTreeHeap.insert(9);
-        binarySearchTreeHeap.insert(5);
-        binarySearchTreeHeap.insert(8);
 
-        System.out.println(binarySearchTreeHeap.search(8));
+    LinearHash linearHash = new LinearHash(100, 90);
+    linearHash.insert("oo", 78);
 
-        binarySearchTreeHeap.print();
-        binarySearchTreeHeap.delete(8);
-        binarySearchTreeHeap.print();
 
 
     }

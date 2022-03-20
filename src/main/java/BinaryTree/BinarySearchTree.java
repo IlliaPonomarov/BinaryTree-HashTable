@@ -6,11 +6,13 @@ import java.util.LinkedList;
 class Node{
     public int key;
     public Node left, right;
+    public int height;
 
     public Node(int key) {
         this.key = key;
         this.left = null;
         this.right = null;
+        this.height = 1;
     }
 }
 
@@ -21,7 +23,6 @@ public class BinarySearchTree {
     public BinarySearchTree() {
         this.root = null;
     }
-
 
     //Inorder
     public void inorder(){
@@ -59,70 +60,88 @@ public class BinarySearchTree {
         }
     }
 
-    public void postorder(){
-        postorderRec(root);
-    }
-
-    void postorderRec(Node head) {
-
-       Node temp = head;
-       List<Node> visited = new LinkedList<Node>();
-
-       while (temp != null && !visited.contains(temp)){
-
-           if (temp.left != null && !visited.contains(temp.left))
-               temp = temp.left;
-
-           else if (temp.right != null && !visited.contains(temp.right))
-               temp = temp.right;
-
-           else {
-               visited.add(temp);
-               System.out.print(temp.key + " \t");
-               temp = head;
-           }
-       }
-    }
-
-
-    public void preorder(){
-        preorderRec(root);
-    }
-
-    void preorderRec(Node root){
-        Node tmp = root;
-        ArrayList<Node> visited = new ArrayList<>();
-
-        while (tmp != null && !visited.contains(tmp)) {
-            while (tmp.left != null) {
-                if (tmp.left != null && !visited.contains(tmp.left))
-                    tmp = tmp.left;
-            }
-            visited.add(tmp);
-            System.out.print(" " + root.key + "\t");
-            tmp = root;
-
-            while (tmp.right != null) {
-                if (tmp.right != null && !visited.contains(tmp.right))
-                    tmp = tmp.right;
-            }
-        }
-
-        for (tmp = root; tmp != null && !visited.contains(tmp); ) {
-
-        }
-
-
-    }
-
-
     public void insert(int key){
         root = insertRec(root, key);
     }
 
+
+    Node rightRotation(Node oldRoot){
+        Node newRoot = oldRoot.left;
+        Node finishChain = newRoot.right;
+
+
+        newRoot.right = oldRoot;
+        oldRoot.left = finishChain;
+
+        oldRoot.height = setHeight(oldRoot) + 1;
+        newRoot.height = setHeight(newRoot) + 1;
+
+        return newRoot;
+    }
+
+    Node leftRotation(Node oldRoot){
+        Node newRoot = oldRoot.right;
+        Node finishChain = newRoot.left;
+
+
+        newRoot.left = oldRoot;
+        oldRoot.right = finishChain;
+
+        oldRoot.height = setHeight(oldRoot) + 1;
+        newRoot.height = setHeight(newRoot) + 1;
+
+        return newRoot;
+    }
+
+
+    int setHeight(Node head){
+        int right_height = -1;
+        int left_height = -1;
+
+        if (head.right == null)
+            right_height = 0;
+
+        if (head.left == null)
+            left_height = 0;
+
+        if (head.right != null)
+            right_height = head.right.height;
+
+        else if (head.left != null)
+            left_height = head.left.height;
+
+        if (left_height > right_height || left_height == right_height)
+            return left_height;
+        else
+            return right_height;
+
+    }
+
+    int getBalance(Node head){
+        int right_height = -1;
+        int left_height = -1;
+
+        if (head.right == null)
+            right_height = 0;
+
+        if (head.left == null)
+            left_height = 0;
+
+        if (head.right != null)
+            right_height = head.right.height;
+
+        else if (head.left != null)
+            left_height = head.left.height;
+
+
+            return left_height - right_height;
+    }
+
+
     private Node insertRec(Node root, int key){
 
         Node node = root;
+        int balance = 0;
 
         if (root == null)
             return new Node(key);
@@ -142,7 +161,6 @@ public class BinarySearchTree {
                         }
                     }
 
-                    //left node
                     if (key < node.key) {
                         if (node.left != null)
                             node = node.left;
@@ -157,6 +175,32 @@ public class BinarySearchTree {
                     return root;
             }
         }
+
+        node.height = setHeight(node) + 1;
+        balance = getBalance(node);
+
+
+       if (balance < -1){
+           if (key > node.right.key)
+               return leftRotation(node);
+
+           if (key < node.right.key){
+               node.right = rightRotation(node.right);
+               return leftRotation(node);
+           }
+       }
+
+       if (balance > 1){
+           if (key < node.left.key)
+               return rightRotation(node);
+
+           if (key > node.left.key){
+               node.left = leftRotation(node.right);
+               return leftRotation(node);
+           }
+       }
+
+
         return root;
     }
 
@@ -164,7 +208,7 @@ public class BinarySearchTree {
        return searchByKeyRec(root, key);
     }
 
-    private int searchByKeyRec(Node root, int key){
+    private int searchByKeyRec(Node root, int key) {
 
         if (root.key == key || root == null)
             return root.key;
@@ -177,102 +221,83 @@ public class BinarySearchTree {
 
     }
 
-    private int searchByKeyRec2(Node root, int key){
-        while (root.key != key || root!= null){
+    Node min(Node node){
+        Node current = node;
 
+        while (current.left != null)
+            current = current.left;
 
-        }
-        return -1;
-    }
-    //DELETE TEST
-
-    public void deleteALL(){
-       root =  deleteRec(root);
+        return current;
     }
 
-    Node deleteRec(Node root){
-        while (root != null){
-            if (root.left != null)
-                return root = root.left = null;
+    public void deleteByKey(int key){
+       root =  deleteRec(root, key);
+    }
 
-            if (root.right != null)
-                return root = root.right = null;
+    Node deleteRec(Node root, int key){
+        if (root == null)
+            return root;
 
+        if (key < root.key)
+            root.left = deleteRec(root.left, key);
+
+        else if (key > root.key)
+            root.right = deleteRec(root.right, key);
+
+        else
+        {
+
+            if ((root.left == null) || (root.right == null))
+            {
+                Node temp = null;
+                if (temp == root.left)
+                    temp = root.right;
+                else
+                    temp = root.left;
+
+                if (temp == null)
+                {
+                    temp = root;
+                    root = null;
+                }
+                else
+                    root = temp;
+            }
+            else
+            {
+                Node temp = min(root.right);
+                root.key = temp.key;
+                root.right = deleteRec(root.right, temp.key);
+            }
         }
+
+
+        root.height = setHeight(root) + 1;
+
+        int balance = getBalance(root);
+
+
+        if (balance > 1){
+            if (getBalance(root.left) >= 0)
+                return rightRotation(root);
+
+            if (getBalance(root.left) < 0){
+                root.left = leftRotation(root.right);
+                return leftRotation(root);
+            }
+        }
+
+        if (balance < -1){
+            if (getBalance(root.right) <= 0)
+                return rightRotation(root);
+
+            if (getBalance(root.right) > 0){
+                root.right = rightRotation(root.right);
+                return leftRotation(root);
+            }
+        }
+
+
         return root;
     }
-
-
-    public void deleteKey(int key){
-        Node ckr1 = null, ckrParent = null;
-        root = deleteKeyRec(root, key, ckr1, ckrParent);
-    }
-
-
-    private int min(Node root){
-
-        int minv = root.key;
-        while (root.left != null){
-            minv = root.left.key;
-            min(root.left);
-        }
-
-        return minv;
-    }
-
-    // Переделать
-   private Node deleteKeyRec(Node root, int key, Node ckr1, Node ckrParent) {
-
-       while (root != null) {
-           if (root.key > key && root.left != null) {
-               root.left = deleteKeyRec(root.left, key, null, null);
-               return root;
-           } else if (root.key < key && root.right != null) {
-               root.right = deleteKeyRec(root.right, key, null, null);
-               return root;
-           }
-
-           // We reach here when root is the node
-           // to be deleted.
-
-           // If one of the children is empty
-           if (root.left == null)
-               return root.right;
-
-            else if (root.right == null)
-               return root.left;
-
-
-           // If both children exist
-           else if (root.left != null && root.right != null){
-               ckrParent = root;
-
-               // Find successor
-               ckr1 = root.right;
-
-               while (ckr1.left != null) {
-
-                   ckrParent = ckr1;
-                   ckr1 = ckr1.left;
-               }
-
-               // Delete successor. Since successor
-               // is always left child of its parent
-               // we can safely make successor's right
-               // right child as left of its parent.
-               // If there is no succ, then assign
-               // succ->right to succParent->right
-               if (ckrParent != root)
-                   ckrParent.left = ckr1.right;
-               else
-                   ckrParent.right = ckr1.right;
-
-               // Copy Successor Data to root
-               root.key = ckr1.key;
-
-               return root;
-           }
-       }
-       return root;
-   }
 }

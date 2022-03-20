@@ -3,10 +3,12 @@ package HashTables;
 import java.util.Arrays;
 
 public class LinearHash {
+    int capacity = 1000;
+    int size;
+    double loadfactor;
 
-    final static Integer CAPACITY = 1000;
+    HTObject[] hashtable;
 
-    HTObject[] hashtable = new HTObject[CAPACITY + 1];
 
     class HTObject {
         private String key;
@@ -26,55 +28,73 @@ public class LinearHash {
         }
     }
 
-    public LinearHash() {
+    public LinearHash(int capacity, double loadfactor) {
 
+        this.capacity = capacity;
+        this.loadfactor = loadfactor;
+        this.hashtable = new HTObject[capacity + 1];
 
-        for (int i = 0; i < CAPACITY + 1 ; i++)
-           this.hashtable[i] = null;
+        for (int i = 0; i < size + 1; i++)
+            this.hashtable[i] = null;
     }
 
     public int hashFunction(String key) {
-        return (key.hashCode() & 0x7FFFFFFF) % CAPACITY;
+        return (key.hashCode() & 0x7FFFFFFF) % capacity;
     }
 
-    public HTObject insert(String key, Integer value) {
+    public void insert(String key, Integer value) {
         int index = hashFunction(key);
         HTObject htObj = hashtable[index];
+
 
         if (htObj == null) {
             htObj = new HTObject(key, value);
             hashtable[index] = htObj;
         } else if (htObj != null) {
 
-            for (int i = 0; i < hashtable.length; i++) {
-                index = index + 1;
-                if (hashtable[index] == null) {
+            for (int i = index; i < hashtable.length; i++) {
+
+                if (hashtable[i] == null) {
                     htObj = new HTObject(key, value);
                     hashtable[index] = htObj;
-                    return hashtable[index];
+                    return;
                 }
             }
         }
 
-        return hashtable[index];
-    }
 
-    public void searchByKey(String key){
 
-        int index = hashFunction(key);
+        size++;
 
-            for (int i = index; i < hashtable.length; i++) {
-                if (hashtable[i] != null) {
-                    if (hashtable[i].getKey().equals(key)) {
-                        HTObject h = hashtable[i];
-                        System.out.println(h.getKey() + " " + h.getValue());
-                    }
-                }
-            }
+        double loadfactor = (1.0 * size) / capacity;
+
+        if (loadfactor > this.loadfactor) {
+            resize();
+        }
+
+
         return;
     }
 
-    public void deleteByKey(String key){
+
+
+
+    public HTObject searchByKey(String key) {
+
+        int index = hashFunction(key);
+
+        for (int i = index; i < hashtable.length; i++) {
+            if (hashtable[i] != null) {
+                if (hashtable[i].getKey().equals(key)) {
+                    HTObject h = hashtable[i];
+                  return h;
+                }
+            }
+        }
+      return null;
+    }
+
+    public void deleteByKey(String key) {
         int index = hashFunction(key);
 
         for (int i = index; i < hashtable.length; i++)
@@ -84,25 +104,25 @@ public class LinearHash {
         return;
     }
 
-    public void resize(){
-        HTObject[] oldHashtable = hashtable;
-        HTObject[] newHashtable = new HTObject[hashtable.length * 2];
-
-        for (int i = 0; i < newHashtable.length; i++)
-            newHashtable[i] = null;
+    public void resize() {
 
 
-        for (int i = 0; i < oldHashtable.length; i++) {
-            if (oldHashtable[i] != null){
-                newHashtable[i] = new HTObject(oldHashtable[i].getKey(), oldHashtable[i].getValue());
+        HTObject[] newtable = new HTObject[hashtable.length * 2];
+        for (int i = 0; i < hashtable.length; i++) {
+
+            HTObject list = hashtable[i];
+            newtable[i] = list;
             }
+
+
+        hashtable = newtable;
+
+        if (hashtable.length > 10000000){
+            this.capacity = 1000000;
+            resize();
         }
 
-        hashtable = newHashtable;
-
-        System.out.println(hashtable.length);
-
-    }
+}
 
 
     public void getAll() {
