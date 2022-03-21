@@ -52,7 +52,8 @@ public class SplayTree {
 
         if (key < root.key)
         {
-            if (root.left == null) return root;
+            if (root.left == null)
+                return root;
 
             if (root.left.key > key)
             {
@@ -106,6 +107,7 @@ public class SplayTree {
         return root;
     }
 
+
     public void insert(int key) {
         root = insertRec(root, key);
     }
@@ -119,8 +121,8 @@ public class SplayTree {
         if (root == null)
             return;
 
-        System.out.print(root.key + " ");
         inorderRec(root.left);
+        System.out.print(root.key + " ");
         inorderRec(root.right);
     }
 

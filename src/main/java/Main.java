@@ -1,8 +1,7 @@
-import BinaryTree.AvlTree;
 import BinaryTree.BinarySearchTree;
+import BinaryTree.SplayTree;
 import DAO.HashDao;
 import DAO.TreeDAO;
-import DAO.User;
 import HashTables.ChainHash;
 import HashTables.LinearHash;
 
@@ -11,11 +10,11 @@ import java.util.Map;
 
 public class Main {
 
-    protected static Map<Integer, User> users;
+    protected static Map<Integer, String> check;
 
     
     protected static BinarySearchTree binarySearchTree = new BinarySearchTree();
-    protected static AvlTree avlTree = new AvlTree();
+    protected static SplayTree splayTree = new SplayTree();
     protected static ChainHash chainHash = new ChainHash(1000, 0.75);
     protected static LinearHash linearHash = new LinearHash(2001, 0.75);
 
@@ -23,6 +22,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
 
+        treeTest();
         hashTablesTest();
        // chainHash.getAll();
 
@@ -31,26 +31,82 @@ public class Main {
 
     public static void treeTest(){
 
-        System.out.println("Binary Search Tree: ");
-        System.out.println("BST Insert: " + getTestOfInsertForBST());
-        System.out.println("BST Search by Key: " + searchByKeyTestBST());
-        System.out.println("BST Delete: " + getTestIDeleteForBST());
+        System.out.println("Binary Search Tree 1000 elements");
+        long start = System.currentTimeMillis();
+        System.out.println("BST Insert: " + getTestOfInsertForBST(1000) + "  " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        System.out.println("BST Search by Key: " + searchByKeyTestBST(1000)+ "  " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        System.out.println("BST Delete: " + getTestIDeleteForBST(1000) + "  " + (System.currentTimeMillis() - start));
 
         System.out.println();
         System.out.println();
 
-        System.out.println("Binary Heap Tree: " );
-        System.out.println("Insert: ");
-        System.out.println("Search: ");
+        System.out.println("Splay Tree: " );
+
+        start = System.currentTimeMillis();
+        System.out.println("Insert: " + getTestOfInsertForSplay(1000) + "  " + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
+        System.out.println("Search: " + searchByKeyTestSplay(1000) + "  " + (System.currentTimeMillis() - start));
 
         System.out.println();
         System.out.println();
 
+
+        // 1 000 000
+
+        System.out.println("Binary Search Tree 1 000 000 elements");
+        start = System.currentTimeMillis();
+        System.out.println("BST Insert: " + getTestOfInsertForBST(1000000) + "  " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        System.out.println("BST Search by Key: " + searchByKeyTestBST(1000000)+ "  " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        System.out.println("BST Delete: " + getTestIDeleteForBST(1000000) + "  " + (System.currentTimeMillis() - start));
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Splay Tree: " );
+
+        start = System.currentTimeMillis();
+        System.out.println("Insert: " + getTestOfInsertForSplay(1000000) + "  " + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
+        System.out.println("Search: " + searchByKeyTestSplay(1000000) + "  " + (System.currentTimeMillis() - start));
+
+        System.out.println();
+        System.out.println();
+
+        // 10 000 000
+
+        System.out.println("Binary Search Tree 10 000 000 elements");
+        start = System.currentTimeMillis();
+        System.out.println("BST Insert: " + getTestOfInsertForBST(10000000) + "  " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        System.out.println("BST Search by Key: " + searchByKeyTestBST(10000000)+ "  " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        System.out.println("BST Delete: " + getTestIDeleteForBST(10000000) + "  " + (System.currentTimeMillis() - start));
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Splay Tree: " );
+
+        start = System.currentTimeMillis();
+        System.out.println("Insert: " + getTestOfInsertForSplay(10000000) + "  " + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
+        System.out.println("Search: " + searchByKeyTestSplay(10000000) + "  " + (System.currentTimeMillis() - start));
 
         System.out.println();
         System.out.println();
 
     }
+
 
     public static void hashTablesTest() throws InterruptedException {
         Date date = new Date();
@@ -85,6 +141,8 @@ public class Main {
 
         // 1 000 000
         sart1 = System.currentTimeMillis();
+        System.out.println();
+        System.out.println();
         System.out.println("Chain Hash Test (1 000 000 elements):");
         System.out.println("Insert: " + getTimeInsertChainHash(1000000)  + "  " + (System.currentTimeMillis() - sart1) + "m/s");
 
@@ -135,53 +193,34 @@ public class Main {
 
     }
 
-    //***************************
+    //***************************************************
     //
     //  BINARY SEARCH TREE TEST , FIRST IMPLEMENTATION
     //
-    //***************************
+    //**************************************************
 
-
-    //***************************
-    //
-    //  BINARY SEARCH TREE TEST, SECOND IMPLEMENTATION
-    //
-    //***************************
 
     //Insert Test
     public static BinarySearchTree insertBST() {
 
-        users = TreeDAO.getData();
+        check = TreeDAO.getData();
 
-        for (Map.Entry<Integer, User> userss : users.entrySet())
+        for (Map.Entry<Integer, String> userss : check.entrySet())
             binarySearchTree.insert(userss.getKey());
 
         return binarySearchTree;
     }
 
-    public static double getTestOfInsertForBST() {
-
+    public static String getTestOfInsertForBST(int count) {
 
         for (int i = 0; i < 20; i++)
             insertBST();
 
-        int count = 1000;
 
-        while (true) {
-            long begin = System.nanoTime();
-
-            for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
                 insertBST();
 
-            long end = System.nanoTime();
-
-            if ((end - begin) < 1000000000) {
-                count *= 1000;
-                continue;
-            }
-            return (double) (end - begin) / count;
-        }
-
+            return " ";
     }
 
     //Delete Test
@@ -189,65 +228,79 @@ public class Main {
 
         BinarySearchTree bst = new BinarySearchTree();
 
-        Map<Integer, User> user = TreeDAO.getData();
+        Map<Integer, String> user = TreeDAO.getData();
 
-        for (Map.Entry<Integer, User> users : user.entrySet())
+        for (Map.Entry<Integer, String> users : user.entrySet())
             bst.deleteByKey(users.getKey());
 
     }
 
-    public static double getTestIDeleteForBST() {
+    public static String getTestIDeleteForBST(int count) {
         for (int i = 0; i < 20; i++)
             deleteBST();
-
-        int count = 1000;
-
-        while (true) {
-            long begin = System.nanoTime();
 
             for (int i = 0; i < count; i++)
                 deleteBST();
 
-            long end = System.nanoTime();
 
-            if ((end - begin) < 1000000000) {
-                count *= 1000;
-                continue;
-            }
-            return (double) (end - begin) / count;
-        }
+            return " ";
 
     }
 
     //Search Test
-    public static double searchByKeyTestBST() {
+    public static String searchByKeyTestBST(int count) {
 
         for (int i = 0; i < 20; i++)
             binarySearchTree.searchByKey((int) Math.random() * 1000);
 
-        int count = 1000;
-
-        while (true) {
-            long begin = System.nanoTime();
-
             for (int i = 0; i < count; i++)
                 binarySearchTree.searchByKey((int) Math.random() * 1000);
 
-            long end = System.nanoTime();
-
-            if ((end - begin) < 1000000000) {
-                count *= 1000;
-                continue;
-            }
-            return (double) (end - begin) / count;
-        }
+            return " ";
     }
 
-    //***************************
+    //*************************************
     //
-    //     AVL TREE TEST
+    //     Splay TREE TEST
     //
-    //***************************
+    //*************************************
+
+
+    //Insert Test
+    public static SplayTree insertSplayTree() {
+
+        check = TreeDAO.getData();
+
+        for (Map.Entry<Integer, String> userss : check.entrySet())
+            splayTree.insert(userss.getKey());
+
+        return splayTree;
+    }
+
+    public static String getTestOfInsertForSplay(int count) {
+
+        for (int i = 0; i < 20; i++)
+            insertSplayTree();
+
+
+        for (int i = 0; i < count; i++)
+            insertSplayTree();
+
+        return " ";
+    }
+
+   //Search Test
+   //Search Test
+   public static String searchByKeyTestSplay(int count) {
+
+       for (int i = 0; i < 20; i++)
+           splayTree.searchByKey((int) Math.random() * 1000);
+
+       for (int i = 0; i < count; i++)
+           splayTree.searchByKey((int) Math.random() * 1000);
+
+       return " ";
+   }
 
 
     //**************************************
@@ -299,19 +352,16 @@ public class Main {
 
     }
 
-    public static Double getTimeSearchByKeyLinearHash(int count){
+    public static String getTimeSearchByKeyLinearHash(int count){
         for (int i = 0; i < 20; i++)
             searchByKeyTestLinearHash();
 
 
-        long beg = System.currentTimeMillis();
-
         for (int i = 0; i < count; i++) {
             searchByKeyTestLinearHash();
         }
-        long en = System.currentTimeMillis();
 
-        return (double) en - beg / count;
+        return "";
     }
 
     //delete
@@ -328,23 +378,18 @@ public class Main {
 
     }
 
-    public static Double getTimeDeleteByKeyLinearHash(int count){
+    public static String getTimeDeleteByKeyLinearHash(int count){
         for (int i = 0; i < 20; i++)
            deleteByKeyTestLinearHash();
 
 
-        for (int i = 0; i < 20; i++)
-            deleteByKeyTestLinearHash();
-
-
-        long beg = System.currentTimeMillis();
 
         for (int i = 0; i < count; i++) {
             deleteByKeyTestLinearHash();
         }
-        long en = System.currentTimeMillis();
 
-        return (double) en - beg / count;
+
+        return "";
     }
 
     //resize

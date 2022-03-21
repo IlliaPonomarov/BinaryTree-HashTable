@@ -1,8 +1,5 @@
 package BinaryTree;
 
-import java.util.*;
-import java.util.LinkedList;
-
 class Node{
     public int key;
     public Node left, right;
@@ -222,12 +219,12 @@ public class BinarySearchTree {
     }
 
     Node min(Node node){
-        Node current = node;
+        Node lastElements = node;
 
-        while (current.left != null)
-            current = current.left;
+        while (lastElements.left != null)
+            lastElements = lastElements.left;
 
-        return current;
+        return lastElements;
     }
 
     public void deleteByKey(int key){
