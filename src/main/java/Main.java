@@ -6,6 +6,7 @@ import HashTables.ChainHash;
 import HashTables.LinearHash;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
@@ -22,8 +23,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
 
-        treeTest();
         hashTablesTest();
+        treeTest();
        // chainHash.getAll();
 
     }
@@ -279,13 +280,14 @@ public class Main {
 
     public static String getTestOfInsertForSplay(int count) {
 
+
         for (int i = 0; i < 20; i++)
             insertSplayTree();
 
 
         for (int i = 0; i < count; i++)
             insertSplayTree();
-
+        HashMap
         return " ";
     }
 
